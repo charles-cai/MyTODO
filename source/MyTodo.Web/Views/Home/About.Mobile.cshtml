@@ -1,0 +1,27 @@
+﻿@{
+    ViewBag.Title = "About Us";
+}
+
+@section MainContent {
+    <h2>About</h2>
+    <p>
+        myTODO is a sample application built on Windows Azure to manage and share simple
+        lists (e.g. tasks to complete, favorite movies, books you enjoyed, etc.).
+    </p>
+    <h3>
+        About the sample</h3>
+    <p>
+		The application is hosted in Windows Azure. You can host your own website visiting the <a href="http://www.microsoft.com/azure/windowsazure.mspx">
+			Windows Azure Site</a>.
+		<br />
+		This application also uses <a href="http://www.asp.net/web-api">
+			ASP.NET Web API</a> and <a href="https://www.sqlazurelabs.com/">SQL Azure</a>
+		as the underlying store. 
+	</p>
+
+    <ul data-role="listview" data-inset="true">
+        <li data-role="list-divider">Navigation</li>
+        <li>@Html.ActionLink("Home", "Index", "Home")</li>
+        <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+    </ul>
+}

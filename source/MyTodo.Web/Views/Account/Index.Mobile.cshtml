@@ -1,0 +1,21 @@
+﻿@model Microsoft.Samples.MyTodo.Web.Models.LogOnModel
+
+@{
+    ViewBag.Title = "Your Account";
+}
+
+@section Header {
+    @Html.ActionLink("Back", "Index", "Home", null, new { data_icon = "arrow-l", data_rel = "back", @class = "ui-btn-right" })
+    <h1 onclick="window.location.href='@Url.Content("~/")'">@ViewBag.Title</h1>
+}
+
+@section MainContent {
+    <p>
+        Logged on as <strong>@User.Identity.Name</strong>.
+    </p>
+
+    <ul data-role="listview" data-inset="true">
+        <li>@Html.ActionLink("Change password", "Profile")</li>
+        <li>@Html.ActionLink("Log off", "LogOff")</li>
+    </ul>
+}

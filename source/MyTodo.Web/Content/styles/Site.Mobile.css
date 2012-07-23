@@ -1,0 +1,159 @@
+﻿body {
+    font-family: arial, verdana, sans-serif;
+}
+/* Styles for validation helpers
+-----------------------------------------------------------*/
+.field-validation-error
+{
+    color: #ff0000;
+    display: block;
+    margin-top: 8px;
+    text-align: center;
+}
+
+.field-validation-valid
+{
+    display: none;
+}
+
+.input-validation-error
+{
+    border: 1px solid #ff0000;
+    background-color: #ffeeee;
+}
+
+.validation-summary-errors
+{
+    font-weight: bold;
+    color: #ff0000;
+}
+
+.validation-summary-valid
+{
+    display: none;
+}
+/* jQuery mobile styles
+-----------------------------------------------------------*/
+
+/* Make listview buttons fill the whole horizontal width of the screen */
+.ui-li .ui-btn-inner a.ui-link-inherit, .ui-li-static.ui-li
+{
+    padding-right: 15px;
+}
+
+.ui-bar-a, .ui-body-a, .ui-btn-up-a, .ui-btn-hover-a, .ui-btn-down-a, .ui-bar-b, .ui-body-b, .ui-btn-up-b, .ui-btn-hover-b, .ui-btn-down-b, .ui-bar-c, .ui-body-c, .ui-btn-up-c, .ui-btn-hover-c, .ui-btn-down-c, .ui-bar-d, .ui-body-d, .ui-btn-up-d, .ui-btn-hover-d, .ui-btn-down-d, .ui-bar-e, .ui-body-e, .ui-btn-up-e, .ui-btn-hover-e, .ui-btn-down-e, .ui-btn-active
+{
+    text-shadow: none;
+}
+
+
+/* red color buttons */
+.ui-btn-up-r
+{
+    border: 1px solid #953403;
+    background: #ec4a0b;
+    font-weight: bold;
+    color: #fff;
+    cursor: pointer;
+    text-shadow: 0 -1px 1px #953403;
+    text-decoration: none;
+    background-image: -moz-linear-gradient(top, #ec4a0b, #ad390c);
+    background-image: -webkit-gradient(linear,left top,left bottom,color-stop(0, #ec4a0b),color-stop(1, #ad390c));
+}
+.ui-btn-up-r a.ui-link-inherit
+{
+    color: #fff;
+}
+.ui-btn-hover-r
+{
+    border: 1px solid #953403;
+    background: #f15c22;
+    font-weight: bold;
+    color: #fff;
+    text-shadow: 0 -1px 1px #014D68;
+    background-image: -moz-linear-gradient(top, #f15c22, #f15c22);
+    text-decoration: none;
+    background-image: -webkit-gradient(linear,left top,left bottom,color-stop(0, #f15c22),color-stop(1, #f15c22));
+}
+.ui-btn-hover-r a.ui-link-inherit
+{
+    color: #fff;
+}
+.ui-btn-down-r
+{
+    border: 1px solid #225377;
+    background: #79ae21;
+    font-weight: bold;
+    color: #fff;
+    text-shadow: 0 -1px 1px #225377;
+    background-image: -moz-linear-gradient(top, #bc770f, #e6590c);
+    background-image: -webkit-gradient(linear,left top,left bottom,color-stop(0, #bc770f),color-stop(1, #e6590c));
+    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#bc770f', EndColorStr='#e6590c')";
+}
+.ui-btn-down-r a.ui-link-inherit
+{
+    color: #fff;
+}
+.ui-btn-up-r, .ui-btn-hover-r, .ui-btn-down-r
+{
+    font-family: Helvetica, Arial, sans-serif;
+}
+
+/* green color buttons */
+.ui-btn-up-g, .ui-btn-hover-g, .ui-btn-down-g
+{
+    color: #fff;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.ui-btn-up-g
+{
+    border: 1px solid #397114;
+    background: #5aab25;
+    text-shadow: 0 -1px 1px #397114;
+    background-image: -moz-linear-gradient(top, #7ec44f, #5aab25);
+    background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #87c45e), color-stop(1, #619e39));
+}
+
+.ui-btn-hover-g
+{    
+    border: 1px solid #2c6e00;
+    background: #75b54a;
+    text-shadow: 0 -1px 1px #2a6901;
+    background-image: -moz-linear-gradient(top, #99d472, #75b54a);
+    background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #99d472), color-stop(1, #75b54a));
+}
+
+.ui-btn-down-g
+{
+    border: 1px solid #457823;
+    background: #7ec44f;
+    text-shadow: 0 -1px 1px #457823;
+    background-image: -moz-linear-gradient(top, #619e39, #7ec44f);
+    background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #619e39), color-stop(1, #7ec44f));
+}
+
+.ui-btn-up-g, .ui-btn-hover-g, .ui-btn-down-g
+{
+    color: white;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.ui-header 
+{
+    background: url('../images/logo_small.png') 7px no-repeat; 
+    height:50px;
+}
+
+.ui-header h1 
+{
+    height:50px;
+    margin: 0px !important;
+    color: #000;
+    text-align: center;
+    line-height: 50px;
+}
+
+.ui-header a { top:.9em !important; }

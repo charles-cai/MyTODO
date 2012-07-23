@@ -1,0 +1,48 @@
+<!DOCTYPE html> 
+<html> 
+    <head> 
+        <meta charset="utf-8" />
+        <title>@ViewBag.Title</title> 
+        <meta name="viewport" content="width=device-width" />
+        
+        <link rel="stylesheet" href="@Url.Content("~/Content/jquery.mobile-1.0b2.min.css")" />
+        <link rel="stylesheet" href="@Url.Content("~/Content/styles/Site.Mobile.css")" />
+        <link rel="stylesheet" href="@Url.Content("~/Content/styles/mobiscroll-1.5.min.css")" />
+        @RenderSection("StylesContent", required: false)
+
+        <script type="text/javascript" src="@Url.Content("~/Scripts/jquery-1.6.3.min.js")"></script>
+        <script type="text/javascript" src="@Url.Content("~/Scripts/jquery.json.min.js")"></script>
+        <script type="text/javascript" src="@Url.Content("~/Scripts/jquery.checkbox.min.js")"></script>
+        <script type="text/javascript">
+            $(document).bind("mobileinit", function () {
+                // As of Beta 2, jQuery Mobile's Ajax navigation does not work in all cases (e.g.,
+                // when navigating from a mobile to a non-mobile page, or when clicking "back"
+                // after a form post), hence disabling it.
+                $.mobile.ajaxEnabled = false;
+            });
+        </script>
+        <script type="text/javascript" src="@Url.Content("~/Scripts/jquery.mobile-1.0b2.min.js")"></script>
+        <script type="text/javascript" src="@Url.Content("~/Scripts/mobiscroll-1.5.min.js")"></script>
+    </head> 
+<body> 
+    <div data-role="page" data-theme="b">
+        <div data-role="header">
+            @if (IsSectionDefined("Header"))
+            {
+                @RenderSection("Header")
+            }
+            else
+            {
+                @Html.Partial("_LogOnPartial")
+                <h1 onclick="window.location.href='@Url.Content("~/")'"></h1>
+            }
+        </div>
+
+        <div data-role="content">	
+            @RenderSection("MainContent", required: false)
+        </div>
+
+    </div>
+    @RenderSection("ScriptsContent", required: false)
+</body>
+</html>

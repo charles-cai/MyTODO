@@ -1,0 +1,67 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=8" />
+    <title>@ViewBag.Title</title>
+    <link rel="stylesheet" href="@Url.Content("~/Content/styles/Site.css")" type="text/css" />
+
+    <script type="text/javascript" src="@Url.Content("~/Scripts/jquery-1.6.3.min.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/Scripts/jquery-ui-1.8.11.min.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/Scripts/jquery.json.min.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/Scripts/jquery.checkbox.min.js")"></script>    
+    
+    @RenderSection("StylesContent", required: false)
+</head>
+<body>
+    <div id="container">
+        <div id="header">
+            <div id="logo">
+                <h1>
+                    <a href="/">
+                        <img src="@Url.Content("~/Content/images/header_logo.png")" width="241" height="121" alt="" />
+                    </a>
+                </h1>
+            </div>
+            <div id="toolbar">
+                @if (IsSectionDefined("ToolbarContent"))
+                {
+                    @RenderSection("ToolbarContent", required: false)
+                }
+                else
+                {
+                    @Html.Partial("_LogOnPartial")
+                }
+                
+            </div>
+        </div>
+        <div id="pageWrapper">
+            <div id="page">
+                <hr />
+                <ul id="navigation">
+                    @if (Request.IsAuthenticated)
+                    {
+                        <li>@Html.ActionLink("My Lists", "Index", "Todo")</li>
+                    }
+                    else
+                    {
+                        <li>@Html.ActionLink("Home", "Index", "Home")</li>
+                    }
+                    <li>@Html.ActionLink("About", "About", "Home")</li>
+                </ul>
+                <hr />
+                <div id="main">
+                    @RenderSection("MainContent", required: false)
+                </div>
+            </div>
+        </div>
+        <div id="footer">
+            <hr />
+            <p class="copyright">
+                &copy; 2012 Microsoft Corporation. All rights reserved.</p>
+        </div>
+        @RenderSection("ScriptsContent", required: false)
+    </div>
+
+</body>
+</html>

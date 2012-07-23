@@ -1,0 +1,56 @@
+@model Microsoft.Samples.MyTodo.Web.ViewModels.TaskListsViewModel
+@{ 
+    ViewBag.Title = "My Lists"; 
+}
+@section MainContent {
+    <ul data-role="listview" data-inset="true" data-filter="true" id="lists">
+        <li data-role="list-divider">My Lists</li>
+    </ul>
+    @if (Request.IsAuthenticated)
+    {        
+        <ul data-role="listview" data-inset="true" data-filter="false">
+            <li data-role="fieldcontain">
+                @Html.TextBox("newListField", string.Empty)
+                <input type="submit" value="Add" id="newListBtn" data-icon="plus">
+            </li>
+        </ul>
+    }
+}
+
+@section ScriptsContent {
+    <script type="text/javascript" src="@(Url.Content("~/Scripts/page.lists.mobile.js"))"></script>
+    <script type="text/javascript" src="@(Url.Content("~/Scripts/plugin.listitem.mobile.js"))"></script>
+    <script type="text/javascript" src="@(Url.Content("~/Scripts/services.lists.js"))"></script>
+    <script type="text/javascript">
+        var authenticatedUser = @(Request.IsAuthenticated.ToString().ToLower());
+        var userName = '@(Request.IsAuthenticated ? User.Identity.Name.ToLower() : "")';
+        var listsService;
+        $(function () {
+            $.mobile.showPageLoadingMsg();
+            listsService = new ListServiceProxy('@(Url.Content("~/api/lists"))');
+            listsService.GetLists(function(listsData) {
+                $('#lists li[data-role!="list-divider"]').remove();
+                if (listsData.length > 0) {
+                    $.each(listsData, function(ix, item) { addList(item); });                    
+                } else {
+                    $("#lists").append('<li data-role="read-only" class="empty">No lists are available.</li>');
+                }
+
+                $.mobile.hidePageLoadingMsg();
+                $('#lists li').last().addClass('ui-corner-bottom');
+                $('#lists').listview('refresh');
+            });
+
+            var doCreateList = function() {
+                var field = $('#newListField');
+                if (field.val().length > 0) {
+                    createList({ Name: field.val() }, true);
+                    field.val("");
+                }
+            };
+
+            $("#newListBtn").click(doCreateList);
+            $("#newListField").keydown(function(e) { if (e.keyCode == 13) doCreateList(); });
+        });
+    </script>
+}

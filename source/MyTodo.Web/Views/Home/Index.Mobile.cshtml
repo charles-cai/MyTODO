@@ -1,0 +1,25 @@
+@model Microsoft.Samples.MyTodo.Web.ViewModels.TaskListsViewModel
+@{ 
+    ViewBag.Title = "myTODO"; 
+}
+@section MainContent {
+    <ul data-role="listview" data-inset="true" data-filter="true">
+        <li data-role="list-divider">myTODO Public Lists</li>
+        @foreach (var item in Model.Lists)
+        {
+            <li>@(Html.ActionLink(item.Name, "Tasks", "Todo", new { id = item.Id }, new { @class = "title" }))</li>
+        }
+    </ul>
+
+    @if (!Request.IsAuthenticated)
+    {
+        <div style="padding: 10px;">@(Html.ActionLink("Sign In", "LogOn", "Account"))
+            to create new lists</div>
+    }
+    else
+    {
+        <div style="padding: 10px;">
+            Go to @(Html.ActionLink("My Lists", "Index", "Todo"))
+            to create new lists</div>
+    }
+}

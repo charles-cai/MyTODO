@@ -1,0 +1,67 @@
+@model Microsoft.Samples.MyTodo.Web.ViewModels.TaskListsViewModel
+@{ 
+    ViewBag.Title = "myTODO - Lists"; 
+}
+@section MainContent {
+    <div class="listHeader">
+        <h2>
+            <span class="sep">(</span>
+            @(Html.ActionLink("RSS", "Rss", "Todo", null, new { @class = "rss" }))
+            <span class="sep">)</span> My Lists
+        </h2>
+    </div>
+    <div id="loading">
+        Loading Lists...
+    </div>
+    <div id="listsWrapper" style="display: none; clear: both;">
+        <ul class="listTasks" id="lists">
+            <li class="empty">No lists are available.</li>
+        </ul>
+        @if (Request.IsAuthenticated)
+        {
+            <div id="newList">
+                <p>
+                    <input type="text" class="title" id="newListField" />
+                    <a id="newListBtn" class="btn add"><span>Add</span></a>
+                </p>
+            </div>
+        }
+    </div>
+    <div class="break">
+    </div>
+}
+@section ScriptsContent {
+    <script type="text/javascript" src="@(Url.Content("~/Scripts/page.lists.js"))"></script>
+    <script type="text/javascript" src="@(Url.Content("~/Scripts/plugin.listitem.js"))"></script>
+    <script type="text/javascript" src="@(Url.Content("~/Scripts/services.lists.js"))"></script>
+    <script type="text/javascript">
+        var authenticatedUser = @(Request.IsAuthenticated.ToString().ToLower());
+        var userName = '@(Request.IsAuthenticated ? User.Identity.Name.ToLower() : "")';
+        var listsService;
+           
+        $(function () {
+            listsService = new ListServiceProxy("@(Url.Content("~/api/lists"))");
+            listsService.GetLists(function(listsData) {
+                $("#lists li.empty").hide()
+                $.each(listsData, function(ix, item) { addList(item); });
+                $("#listsWrapper").hide().slideDown();
+                $("#loading").fadeOut();
+                refreshStripes();
+            });
+
+            var doCreateList = function() {
+                var field = $('#newListField');
+                if (field.val().length > 0) {
+                    createList({ Name: field.val() }, true);
+                    field.val("");
+                }
+            };
+
+            $("#newListBtn").click(doCreateList);
+            $("#newListField").keydown(function(e) { if (e.keyCode == 13) doCreateList(); })
+                                .blur(function(e) { if ($(this).val() == "") $(this).addClass("disabled").val("New List"); })
+                                .focus(function(e) { if ($(this).val() == "New List") $(this).removeClass("disabled").val(""); })
+                                .addClass("disabled").val("New List");
+        });
+    </script>
+}

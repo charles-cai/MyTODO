@@ -1,0 +1,107 @@
+@model Microsoft.Samples.MyTodo.Web.ViewModels.TaskListViewModel
+@{ 
+    ViewBag.Title = "Tasks"; 
+}
+
+@section MainContent {
+    <div id="task-list" >
+        <ul data-role="listview" data-inset="true" data-filter="true" id="tasks">
+            <li data-role="list-divider">@Model.TaskList.Name</li>
+        </ul>
+        @if (Model.IsOwner)
+        {
+            <ul data-role="listview" data-inset="true" data-filter="false" id="actions">
+                <li data-role="fieldcontain">
+                    @Html.TextBox("newTaskField", string.Empty)
+                    <input type="submit" value="Add" id="newTaskBtn" data-icon="plus">
+                </li>
+            </ul>
+        }
+    </div>
+    @if (Model.IsOwner)
+    {     
+        <ul data-role="listview"  data-inset="true" id="crud" style="display:none;">
+            <li data-role="list-divider">Task Information</li>
+            <li data-role="fieldcontain">
+                <label for="name">Task Name:</label>
+                <input type="text" name="title" id="title" value="" />
+            </li>
+            <li data-role="fieldcontain">
+                <fieldset data-role="controlgroup">
+                    <legend></legend>
+                    <input type="checkbox" name="status" id="status" />
+                    <label for="status">Completed</label>
+                </fieldset> 
+            </li>
+            <li data-role="fieldcontain">
+                <label for="name">Start Date:</label>
+                <input type="text" name="startDate" id="startDate" value="" class="mobiscroll" />
+            </li>
+            <li data-role="fieldcontain">
+                <label for="name">Due Date:</label>
+                <input type="text" name="dueDate" id="dueDate" value="" class="mobiscroll" />
+            </li>
+            <li data-role="fieldcontain">
+                <fieldset data-role="controlgroup" data-type="horizontal" style="text-align:center;">                
+                    <legend></legend>
+                    <input type="button" value="X" class="delete"  data-theme="r" />
+                    <input type="button" value="Back" class="back"  data-theme="c" />
+                    <input type="button" value="Save" class="save" data-theme="c" />
+                </fieldset>
+            </li>
+        </ul>
+    }
+}
+
+@section ScriptsContent {
+    <script type="text/javascript" src="@(Url.Content("~/Scripts/plugin.taskitem.mobile.js"))"></script>
+    <script type="text/javascript" src="@(Url.Content("~/Scripts/page.tasks.mobile.js"))"></script>
+    <script type="text/javascript" src="@(Url.Content("~/Scripts/services.tasks.js"))"></script>
+    <script type="text/javascript">
+    var listId = "@(Model.TaskList.Id)";
+    var isOwner = @(Model.IsOwner.ToString().ToLower());
+    var taskList;
+
+    $(function() {
+        $.mobile.showPageLoadingMsg();
+        tasksService = new TaskServiceProxy('@(Url.Content("~/api/lists"))');
+        tasksService.GetTasks(listId, function (tasksData) {
+            taskList = tasksData;
+            $('#tasks li[data-role!="list-divider"]').remove();
+            var sortByProperty = function(prop) {
+                return function(a,b) {
+                    if (typeof a[prop] == "number") {
+                        return (a[prop] - b[prop]);
+                    } else {
+                        return ((a[prop] < b[prop]) ? -1 : ((a[prop] > b[prop]) ? 1 : 0));
+                    }
+                };
+            };
+            if (taskList.length > 0) {
+                tasksData.sort(sortByProperty("Name"));
+                $.each(tasksData, function (ix, item) { addTaskToUI(item); });
+            } else {
+                $("#tasks").append('<li data-role="read-only" class="empty">No tasks here.</li>');
+            }
+
+            $.mobile.hidePageLoadingMsg();
+            $('#tasks li').last().addClass('ui-corner-bottom');
+
+            if(!isOwner) $("#tasks li").attr("data-role", "read-only");
+
+            $('#tasks').listview('refresh');
+        });
+
+        var doCreateTask = function () {
+            var field = $('#newTaskField');
+            if (field.val().length > 0) {
+                createTask({ Subject: field.val() }, listId, true);
+                field.val("");
+            }
+        };
+
+        $("#newTaskBtn").click(doCreateTask);
+        $("#newTaskField").keydown(function (e) { if (e.keyCode == 13) doCreateTask(); });
+    });
+    </script>
+}

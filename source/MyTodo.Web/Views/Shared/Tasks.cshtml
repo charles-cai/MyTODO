@@ -1,0 +1,84 @@
+@model Microsoft.Samples.MyTodo.Web.ViewModels.TaskListViewModel
+@{ 
+    ViewBag.Title = "myTODO - Tasks"; 
+}
+@section MainContent {
+    <div class="listHeader">
+        <h2>
+            <span class="sep">(</span>
+            @Html.ActionLink("RSS", "Rss", "Todo", new { id = Model.TaskList.Id }, new { @class = "rss" })
+            <span class="sep">)</span>
+            @Model.TaskList.Name
+        </h2>
+    </div>
+    <div id="loading">
+        Loading Tasks...
+    </div>
+    <div id="tasksWrapper" style="display: none; clear: both;">
+        <ul class="listTasks" id="tasks">
+            <li class="empty">No tasks here.</li>
+        </ul>
+        @if (Model.IsOwner) { 
+
+            <div id="newTask">
+                <p>
+                    <input type="text" class="title" id="newTaskField" />
+                    <a id="newTaskBtn" class="btn add"><span>Add</span></a>
+                </p>
+            </div>
+        }
+
+    </div>
+    <div class="break">
+    </div>
+}
+@section StylesContent {
+    <link type="text/css" rel="Stylesheet" href="@(Url.Content("~/Content/themes/base/jquery.ui.all.css"))" />
+}
+@section ScriptsContent {
+    <script type="text/javascript" src="@(Url.Content("~/Scripts/plugin.taskitem.js"))"></script>
+    <script type="text/javascript" src="@(Url.Content("~/Scripts/page.tasks.js"))"></script>
+    <script type="text/javascript" src="@(Url.Content("~/Scripts/services.tasks.js"))"></script>
+    <script type="text/javascript">
+    var listId = "@(Model.TaskList.Id)";
+    var isOwner = @(Model.IsOwner.ToString().ToLower());
+    var taskList;
+
+    $(function() {
+        tasksService = new TaskServiceProxy('@(Url.Content("~/api/lists"))');
+        tasksService.GetTasks(listId, function (tasksData) {
+            taskList = tasksData;
+            $("#tasks li.empty").hide();
+            var sortByProperty = function(prop) {
+                return function(a,b) {
+                    if (typeof a[prop] == "number") {
+                        return (a[prop] - b[prop]);
+                    } else {
+                        return ((a[prop] < b[prop]) ? -1 : ((a[prop] > b[prop]) ? 1 : 0));
+                    }
+                };
+            };
+            tasksData.sort(sortByProperty("Name"));
+            $.each(tasksData, function (ix, item) { addTaskToUI(item); });
+            $("#tasksWrapper").hide().slideDown();
+            if(!isOwner) $("#tasksWrapper").addClass("readOnly");
+            $("#loading").fadeOut();
+            refreshStripes();
+        });
+
+        var doCreateTask = function () {
+            var field = $('#newTaskField');
+            if (field.val().length > 0) {
+                createTask({ Subject: field.val() }, listId, true);
+                field.val("");
+            }
+        };
+
+        $("#newTaskBtn").click(doCreateTask);
+        $("#newTaskField").keydown(function (e) { if (e.keyCode == 13) doCreateTask(); })
+                          .blur(function (e) { if ($(this).val() == "") $(this).addClass("disabled").val("New Task"); })
+                          .focus(function (e) { if ($(this).val() == "New Task") $(this).removeClass("disabled").val(""); })
+                          .addClass("disabled").val("New Task");
+    });
+    </script>
+}
